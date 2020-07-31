@@ -210,12 +210,12 @@ class SubjectChoice(models.Model):
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
     contact_choice_text = models.ForeignKey(SubjectChoice, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
     email = models.CharField(max_length=100)
     text = models.TextField(max_length=250)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.email

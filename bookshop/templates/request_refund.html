@@ -1,0 +1,28 @@
+{% extends 'index.html'%}
+{% load crispy_forms_tags %}
+<title>{% block title_head%}Refund request{% endblock title_head%}</title>
+{% block content%}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+<main>
+    <div class="container">
+        <div class="table-responsive">
+            <h2>Request Refund</h2>
+			<form method="POST">
+				{% csrf_token %}
+				{{form|crispy}}
+				<button type="submit" class="btn btn-primary bg-blue-100">Submit</button>
+			</form>
+        </div>
+
+    </div>
+</main>
+{% endblock content%}

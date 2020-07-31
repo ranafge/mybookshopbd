@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+
+<div>
+<!-- {% for content in queryset %}-->
+<!--	<h2>{{ content.title }}</h2>-->
+<!--	<img src="content.image.url" />-->
+<!--	<a class="btn btn-outline-primary btn-lg btn-block" href="{% url 'detail' content.pk %}">SHOW DETAIL</a>-->
+<!-- {% endfor %}-->
+</div>
+
+<div>
+<a href="#" class="list-group-item active">
+Category
+</a>
+	{{object_list}}
+<div>
+	 {% for category in object_list %}
+
+		{{ category.name }}
+		</a>
+	 {% endfor %}
+</div>
+</div>
+</body>
+</html>

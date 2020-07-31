@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+my category books
+{% for obj in object_list%}
+{{obj}}
+{% endfor %}
+p
+<h2>Category {{ category.name }}</h2>
+	{{get_queryset}}
+    <ol>
+      {% for category in context %}
+        <li>{{ category.name }}</li>
+
+      {% endfor %}
+    </ol>   <ol>
+      {% for book in bookstore.category.all %}
+        <li>{{ book.title }}</li>
+
+      {% endfor %}
+    </ol>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>

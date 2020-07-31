@@ -1,0 +1,29 @@
+{% extends "index2.html" %}
+{% load crispy_forms_tags %}
+{% block head_title %}{% endblock %}
+
+{% block extra_body %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+{% endblock extra_body %}
+
+
+<div class="container">
+<div class="col-sm-6 col-sm-offseet-3">
+      <div>
+        <h1 class="mt-20">Sign In</h1>
+      </div>
+      <div class="ml-12">
+      <form class="login" method="POST" action="{% url 'bookshop:index' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-primary" type="submit">Sign In</button>
+
+      </form>
+      </div>
+    <div class="ml-12">
+    <a class="button secondaryAction" href="{% url 'account_reset_password' %}">Forgot Password</a>
+    </div>
+</div>
+</div>
+</container>

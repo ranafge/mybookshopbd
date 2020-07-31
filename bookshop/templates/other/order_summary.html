@@ -1,0 +1,82 @@
+{% extends 'index.html' %}
+
+{% load cart_template_tags %}
+<!--other/order_summary.html-->
+{% block content %}
+<main>
+    <div class="container">
+        <div class="table-responsive">
+            
+            <h2>Order Summary</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Sl</th>
+                    <th scope="col">Item Tittle</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Item Price</th>
+                    <th scope="col">Delete order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_item in order.books.all %}
+                    <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{order_item.book.title}}</td>
+                    <td>{{order_item.book.price}}</td>
+                    <td><a href="{% url 'bookshop:remove-single-item-from-cart' order_item.book.slug %}"><i class="fa fa-minus mr-2"></i></a> {{order_item.quantity}}<a href="{% url 'bookshop:add-to-cart' order_item.book.slug %}"><i class="fa fa-plus ml-2"></i></a></td>
+                    {% if order_item.book.discount_price %}
+                        <td>{{order_item.get_total_discount_book_price}} <span class="badge badge-primary"><h6>saving {{order_item.get_amount_saved}}</h6></span></td>
+                    {% else %}
+                    <td>{{order_item.get_total_book_price}}</td>
+                    {% endif %}
+                    <td>
+                       <a style="color:red" href="{%url 'bookshop:remove-from-cart' order_item.book.slug %}"> <i class="fa fa-trash"></i></a>
+                    </td>
+                    </tr>
+                    {% empty %}
+
+                    <tr class="text-primary text-light p-15 bg-dark text-center">
+                        <td colspan="12" ><b style="font-size:20px">𝚈𝚘𝚞'𝚛 𝙲𝚊𝚛𝚝 𝙸𝚜 𝙴𝚖𝚙𝚝𝚢 😔. 𝙿𝚕𝚎𝚊𝚜𝚎 𝙲𝚘𝚗𝚝𝚒𝚗𝚞𝚎 𝚂𝚑𝚘𝚙𝚙𝚒𝚗𝚐.</b></td>
+                    </tr>
+                    <td colspan="5">
+                        <a  class="btn btn-primary float-right ml-2 text-light" href="{% url 'bookshop:book-list'%}">Continue Shoping</a>
+
+                    </td>
+
+                {% endfor  %}
+                {% if order.get_total %}
+                {% if order.coupon %}
+              <tr>
+                    <td colspan="4">Coupon</td>
+                    <td colspan="8"> {{order.coupon.amount}}</td>
+                </tr>
+                 {% endif %}
+                
+                <tr>
+                    <td colspan="4">Order total price</td>
+                   
+                    <td colspan="8"> {{order.get_total}}</td>
+                </tr>
+              
+                <tr>
+                    <td colspan="5">
+                         <a  class="btn btn-warning float-right ml-2" href="{% url 'bookshop:checkout' %}">Proceed to Check Out</a>
+                        <a  class="btn btn-primary float-right  text-light" href="{% url 'bookshop:index'%}">Continue Shopping</a>
+                       
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            
+        </div>
+
+    </div>
+</main>
+
+{% endblock content %}
+
+
+

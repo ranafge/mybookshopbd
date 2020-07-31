@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load cart_template_tags %}
+
+<title>{% block title_head%}All book{% endblock title_head%}</title>
+{% block all_books%}
+	<!-- Start Shop Home List  -->
+<section class="shop-home-list section">
+	<div class="container-fluid">
+		<div class="row">
+			{% for book in books%}
+			<div class="col-lg-4 col-md-6 col-12">
+			<!-- Start Single List  -->
+				<div class="single-list">
+				<div class="row">
+					<div class="col-lg-4 col-md-6 col-12">
+						<div class="list-image overlay">
+							<img src="{{book.photo.url}}" alt="#">
+							<a href="{{book.get_add_to_cart_url  }}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6 col-12 no-padding">
+						<div class="content">
+							<h4 class="title"><a href="{{book.get_absolute_url}}">{{book.title}}</a></h4>
+							<h4 class="price with-discount"><a href="{{book.author.get_absolute_url}}">{{book.author}}</a></h4>
+							<p>  {% if book.discount_price %}
+								  <span class="mb-1">
+									<del>${{ book.price }}</del>
+								  </span>
+								  <span class="label-primary mr-1">${{ book.discount_price }}</span>
+								
+								  {% else %}
+									<span >${{ book.price }}</span>
+								  {% endif %}
+							</p>
+							<p class="price with-discount"><a href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
+						
+					
+						</div>
+					</div>
+				</div>
+			</div>
+						</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>
+
+{% endblock all_books%}
+

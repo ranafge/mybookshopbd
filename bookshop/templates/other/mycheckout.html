@@ -1,0 +1,9 @@
+{% load bootstrap4 %}
+{% load static %}
+{% load cart_template_tags %}
+{% load crispy_forms_tags %}
+<form method="POST">
+{% csrf_token%}
+{{form|crispy}}
+<button btn btn-primary type="button" value="submit">Submit</button>
+</form>

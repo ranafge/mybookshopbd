@@ -1,0 +1,85 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load cart_template_tags %}
+<title>{% block title_head%}Search {% endblock title_head%}</title>
+{% block extra_head%}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock extra_head%}
+
+<!--Section: Block Content-->
+	<!--/ End Slider Area -->
+{% block search_content %}
+
+<section class="shop-home-list section">
+<div class="container-fluid">
+{% if page_obj %}
+<h1>Your search results {{page_obj|length }} items found</h1>
+<div class="row">
+{% for book in page_obj%}
+<div class="col-lg-4 col-md-6 col-12">
+<!-- Start Single List  -->
+<div class="single-list">
+<div class="row">
+<div class="col-lg-4 col-md-6 col-12">
+<div class="list-image overlay">
+<img src="{{book.photo.url}}" alt="#">
+<a href="{{book.get_add_to_cart_url  }}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+</div>
+</div>
+<div class="col-lg-4 col-md-6 col-12 no-padding">
+<div class="content">
+<h4 class="title"><a href="{{book.get_absolute_url}}">{{book.title}}</a></h4>
+<h4 class="price with-discount"><a href="{{book.author.get_absolute_url}}">{{book.author}}</a></h4>
+<p> {% if book.discount_price %}
+	  <span class="mb-1">
+		<del>${{ book.price }}</del>
+	  </span>
+	  <span class="label-primary mr-1">${{ book.discount_price }}</span>
+	
+	  {% else %}
+		<span >${{ book.price }}</span>
+	  {% endif %}
+</p>
+<p class="price with-discount"><a  href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endfor %}
+{% else %}
+<div class="container">
+	 <div class="row mt-20  p-15">
+		 <div style="background-color:powderblue;"><h2>Your search "{{query }}" is not found.</h2></div>
+	 </div>
+</div>
+
+</div>
+{% endif %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&query={{request.GET.query}}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&query={{request.GET.query}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&query={{request.GET.query}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&query={{request.GET.query}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+</div>
+
+</section>
+
+
+{% endblock search_content %}

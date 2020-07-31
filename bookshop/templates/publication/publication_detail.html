@@ -1,0 +1,78 @@
+{% extends 'index2.html'%}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block single_publisher %}
+
+
+
+
+
+
+
+
+<section class="shop-home-list section">
+	<div class="container-fluid">
+		<div class="row">
+			{% for book in page_obj%}
+			<div class="col-lg-4 col-md-6 col-12">
+			<!-- Start Single List  -->
+				<div class="single-list">
+				<div class="row">
+					<div class="col-lg-4 col-md-6 col-12">
+						<div class="list-image overlay">
+							<img src="{{book.photo.url}}" alt="#">
+							<a href="{{book.get_add_to_cart_url  }}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6 col-12 no-padding">
+						<div class="content">
+							<h4 class="title"><a href="{{book.get_absolute_url}}">{{book.title}}</a></h4>
+							<h4 class="price with-discount"><a href="{{book.author.get_absolute_url}}">{{book.author}}</a></h4>
+							<p  {% if book.discount_price %}
+								  <span class="mb-1">
+									<del>${{ book.price }}</del>
+								  </span>
+								  <span class="label-primary mr-1">${{ book.discount_price }}</span>
+								
+								  {% else %}
+									<span >${{ book.price }}</span>
+								  {% endif %}
+							</p>
+							<p class="price with-discount"><a href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
+						
+					
+						</div>
+					</div>
+				</div>
+			</div>
+						</div>
+			{%empty%}
+			<div class="alert alert-primary">
+				<strong>Sorry!</strong> This publication has no books.
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+</section>
+
+
+
+
+
+{% endblock single_publisher %}

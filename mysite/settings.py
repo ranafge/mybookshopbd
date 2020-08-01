@@ -155,7 +155,7 @@ SITE_ID = 1
 #
 # MEDIA_ROOT = os.path.join(BASE_DIR,'media/users/2020/')
 
-STATIC_URL = '/static/'
+STATIC_URL = '/home/rana/Read_In_2020/django_tut/mysite/bookshop/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATICFILES_DIRS = [

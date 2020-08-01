@@ -210,7 +210,8 @@ class SubjectChoice(models.Model):
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=50, null=True
+                            )
     contact_choice_text = models.ForeignKey(SubjectChoice, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
     email = models.CharField(max_length=100)

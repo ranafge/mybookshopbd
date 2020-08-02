@@ -16,6 +16,7 @@ django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==1.1.1
 django-ckeditor==5.9.0
 django-cors-headers==3.4.0
+django-countries==5.3.3
 django-crispy-forms==1.7.2
 django-debug-toolbar==1.10.1
 django-extensions==2.2.9
@@ -36,8 +37,12 @@ isort==4.3.21
 jedi==0.17.1
 Jinja2==2.11.2
 jsonschema==3.2.0
-
+jupyter==1.0.0
+jupyter-client==6.1.6
+jupyter-console==6.1.0
+jupyter-core==4.6.3
 lazy-object-proxy==1.4.3
+lxml==4.5.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
 mistune==0.8.4
@@ -91,6 +96,7 @@ tox==3.15.2
 traitlets==4.3.3
 typed-ast==1.4.1
 Unidecode==1.1.1
+urllib3==1.24.2
 virtualenv==20.0.10
 wcwidth==0.2.5
 webencodings==0.5.1

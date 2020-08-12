@@ -15,7 +15,7 @@ SECRET_KEY = 't&smw7s7s%afux0t8=z%11vz0z)crst@dk64z4v1elg!mwf6-j'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -192,3 +192,5 @@ EMAIL_HOST_USER = "ranafge@gmail.com"
 EMAIL_HOST_PASSWORD = "Ayesha9911@"
 
 LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'

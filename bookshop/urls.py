@@ -33,3 +33,7 @@ urlpatterns = [
     path('all-author/', views.all_author, name='all-author'),
 
 ]
+
+
+handler404 = "bookshop.views.handler404"
+handler500 = "bookshop.views.handler500"

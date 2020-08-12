@@ -443,3 +443,11 @@ def all_category(request):
     all_category = models.Category.objects.all()
     return render(request, 'all_category.html', {'all_category': all_category})
 
+
+def handler404(request, exception):
+    return render(request, "404.html")
+
+
+def handler500(request, exception):
+    return render(request, "500.html")
+

@@ -1,18 +1,26 @@
-{% extends 'index2.html'%}
+{% extends 'index.html'%}
 {% load bootstrap4 %}
 {% load static %}
 
+{% block extra_head%}
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"
+		rel="stylesheet">
+
+{% endblock extra_head%}
+
 {% block single_publisher %}
-
-
-
-
-
-
-
-
+{% for message in messages %}
+<div class="container-fluid p-0 float-left">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
 <section class="shop-home-list section">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			{% for book in page_obj%}
 			<div class="col-lg-4 col-md-6 col-12">
@@ -29,7 +37,7 @@
 						<div class="content">
 							<h4 class="title"><a href="{{book.get_absolute_url}}">{{book.title}}</a></h4>
 							<h4 class="price with-discount"><a href="{{book.author.get_absolute_url}}">{{book.author}}</a></h4>
-							<p  {% if book.discount_price %}
+							<p>  {% if book.discount_price %}
 								  <span class="mb-1">
 									<del>${{ book.price }}</del>
 								  </span>
@@ -39,18 +47,12 @@
 									<span >${{ book.price }}</span>
 								  {% endif %}
 							</p>
-							<p class="price with-discount"><a href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
-						
-					
+							<p class="price with-discount"><a  href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
 						</div>
 					</div>
 				</div>
 			</div>
-						</div>
-			{%empty%}
-			<div class="alert alert-primary">
-				<strong>Sorry!</strong> This publication has no books.
-			</div>
+		</div>
 			{% endfor %}
 		</div>
 	</div>
@@ -63,16 +65,11 @@
             <span class="current">
                 Page {{ page_obj.number }} of {{ paginator.num_pages }}.
             </span>
-
             {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}">next</a>
             {% endif %}
         </span>
     </div>
 </section>
-
-
-
-
 
 {% endblock single_publisher %}

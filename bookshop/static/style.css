@@ -636,7 +636,7 @@ Version:1.0
 }
 .header.shop .search-bar {
 	margin-top: 33px;
-	width: 460px;
+	width: 560px;
 	height: 40px;
 	display: inline-block;
 	background: #fff;
@@ -691,7 +691,7 @@ Version:1.0
 .header.shop .search-bar form {
 	display: inline-block;
 	float: left;
-	width: 260px;
+	width: 560px;
 }
 .header.shop .search-bar input {
 	height: 48px;
@@ -2824,7 +2824,7 @@ Version:1.0
 	overflow: hidden;
 	position: relative;
 	margin-top: 30px;
-	border: 1px solid #eee;
+	border: 2px solid #eee;
 	padding: 10px;
 }
 .shop-home-list .single-list .list-image{
@@ -2843,7 +2843,7 @@ Version:1.0
 	visibility:visible;
 }
 .shop-home-list .single-list .list-image .buy{
-	height:40px;
+	height:50px;
 	width:45px;
 	line-height:40px;
 	font-size:14px;
@@ -2898,12 +2898,12 @@ Version:1.0
 	color: #F7941D;
 }
 .shop-home-list .single-list .content .price {
-	margin-top: 15px;
+	margin-top: 20px;
 	font-weight: 500;
 	background: #f7941d;
 	display: inline-block;
 	color: #fff;
-	padding: 2px 18px;
+	padding: 3px 18px;
 	border-radius: 30px;
 	font-size: 14px;
 	font-weight: 500;

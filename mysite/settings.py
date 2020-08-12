@@ -56,10 +56,8 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = [
 
-    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
-    # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 
 ]
@@ -77,7 +75,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media'
+                'django.template.context_processors.media',
+                'bookshop.context_processors.market',
             ],
 
         },
@@ -154,7 +153,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # ]
 
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]

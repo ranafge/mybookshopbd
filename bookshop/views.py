@@ -21,14 +21,10 @@ from django.db.models import Q
 
 def index(request):
     books = models.Bookstore.objects.all().order_by('price')
-    all_author = models.Author.objects.all()
-    all_publication = models.Publication.objects.all()
-    all_category = models.Category.objects.all()
-    paginator = Paginator(books,12)
+    paginator = Paginator(books,10)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'index.html', {'books': books, 'all_author': all_author, "all_publication": all_publication,
-                                          "all_category": all_category,'page_obj': page_obj})
+    index_obj = paginator.get_page(page_number)
+    return render(request, 'index.html',{'index_obj': index_obj})
 
 
 def allbook(request):
@@ -47,8 +43,8 @@ def create_ref_code():
 
 
 class AuthorDetail(generic.detail.SingleObjectMixin, generic.ListView):
-    paginate_by = 3
-    template_name = 'other/single_page.html'
+    paginate_by = 2
+    template_name = 'author/author_detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=models.Author.objects.all())
@@ -64,7 +60,7 @@ class AuthorDetail(generic.detail.SingleObjectMixin, generic.ListView):
 
 
 class PublisherDetail(generic.detail.SingleObjectMixin, generic.ListView):
-    paginate_by = 3
+    paginate_by = 1
     template_name = 'publication/publication_detail.html'
 
     def get(self, request, *args, **kwargs):
@@ -124,7 +120,7 @@ class BookDetailSlugView(generic.DetailView):
 
 class CategoryDetail(generic.DetailView, MultipleObjectMixin):
     model = models.Category
-    paginate_by = 3
+    paginate_by = 2
     template_name = "category/category_detail.html"
 
     def get_context_data(self, **kwargs):
@@ -380,9 +376,7 @@ def contact_us(request):
 
 
 def search(request):
-    search_book_list = models.Bookstore.objects.all()
     query = request.GET.get("query")
-    print(query)
     if query:
         search_book_list = models.Bookstore.objects.filter(
             Q(slug__icontains=query) |
@@ -401,6 +395,7 @@ def search(request):
         )
 
         paginator = Paginator(search_book_list, 3)
+        total = paginator.count
         page = request.GET.get('page')
         try:
             posts = paginator.page(page)
@@ -408,13 +403,17 @@ def search(request):
             posts = paginator.page(1)
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
+
         context = {
-            "page_obj": posts,
-            'query': query
+            "search_obj": posts,
+            'query': query,
+            'total': total
+
         }
 
         return render(request, 'search.html', context)
-
+    else:
+        return render(request, 'search.html')
 
 class MySearchModel(generic.ListView):
     model = models.Bookstore
@@ -443,3 +442,4 @@ def all_publication(request):
 def all_category(request):
     all_category = models.Category.objects.all()
     return render(request, 'all_category.html', {'all_category': all_category})
+

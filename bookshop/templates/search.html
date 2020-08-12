@@ -11,12 +11,20 @@
 	<!--/ End Slider Area -->
 {% block search_content %}
 
+{% if total > 0 %}
+	<h1>Your search results {{total }} items found</h1>
+	{% else %}
+  	<h1>Your search results not found.Please check and search again.</h1>
+{% endif %}
+
+<p>Please check and search again.</p>
 <section class="shop-home-list section">
 <div class="container-fluid">
-{% if page_obj %}
-<h1>Your search results {{page_obj|length }} items found</h1>
+
+
+
 <div class="row">
-{% for book in page_obj%}
+{% for book in search_obj%}
 <div class="col-lg-4 col-md-6 col-12">
 <!-- Start Single List  -->
 <div class="single-list">
@@ -49,31 +57,28 @@
 </div>
 </div>
 {% endfor %}
-{% else %}
-<div class="container">
-	 <div class="row mt-20  p-15">
-		 <div style="background-color:powderblue;"><h2>Your search "{{query }}" is not found.</h2></div>
-	 </div>
-</div>
+
 
 </div>
-{% endif %}
+
 <div class="pagination">
+	{% if search_obj %}
     <span class="step-links">
-        {% if page_obj.has_previous %}
+        {% if search_obj.has_previous %}
             <a href="?page=1&query={{request.GET.query}}">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}&query={{request.GET.query}}">previous</a>
+            <a href="?page={{ search_obj.previous_page_number }}&query={{request.GET.query}}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            Page {{ search_obj.number }} of {{ search_obj.paginator.num_pages }}.
         </span>
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}&query={{request.GET.query}}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}&query={{request.GET.query}}">last &raquo;</a>
+        {% if search_obj.has_next %}
+            <a href="?page={{ search_obj.next_page_number }}&query={{request.GET.query}}">next</a>
+            <a href="?page={{ search_obj.paginator.num_pages }}&query={{request.GET.query}}">last &raquo;</a>
         {% endif %}
     </span>
+	{% endif%}
 </div>
 
 

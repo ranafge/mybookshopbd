@@ -1,25 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-</head>
-<body>
-{{author.object.all}}
-{{object.bookstore_set.all}}
-<h2>Author {{ author.name }}</h2>
+{% extends 'index.html'%}
+{% load bootstrap4 %}
+{% load static %}
 
-    <ol>
-      {% for author in page_obj %}
-        <li>{{ author.title }}</li> <br>
-
-    <li>{{author.price}}</li>
-    <li>{{author.book_details}}</li>
-
-      {% endfor %}
-    </ol>
-
-    <div class="pagination">
+{% block single_author %}
+{% for message in messages %}
+<div class="container-fluid p-0 float-left">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+<!--file name single_page-->
+<section class="shop-home-list section">
+	<div class="container-fluid">
+		<div class="row">
+			{% for book in page_obj%}
+			<div class="col-lg-4 col-md-6 col-12">
+			<!-- Start Single List  -->
+				<div class="single-list">
+				<div class="row">
+					<div class="col-lg-4 col-md-6 col-12">
+						<div class="list-image overlay">
+							<img src="{{book.photo.url}}" alt="#">
+							<a href="{{book.get_add_to_cart_url  }}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6 col-12 no-padding">
+						<div class="content">
+							<h4 class="title"><a href="{{book.get_absolute_url}}">{{book.title}}</a></h4>
+							<h4 class="price with-discount"><a href="{{book.author.get_absolute_url}}">{{book.author}}</a></h4>
+							<p>  {% if book.discount_price %}
+								  <span class="mb-1">
+									<del>${{ book.price }}</del>
+								  </span>
+								  <span class="label-primary mr-1">${{ book.discount_price }}</span>
+								
+								  {% else %}
+									<span >${{ book.price }}</span>
+								  {% endif %}
+							</p>
+							<p class="price with-discount"><a href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
+						
+					
+						</div>
+					</div>
+				</div>
+			</div>
+						</div>
+			{%empty%}
+			<div class="alert alert-primary">
+				<strong>Sorry!</strong> This author has no books.
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
                 <a href="?page={{ page_obj.previous_page_number }}">previous</a>
@@ -34,6 +72,5 @@
             {% endif %}
         </span>
     </div>
-
-</body>
-</html>
+</section>
+{% endblock single_author %}

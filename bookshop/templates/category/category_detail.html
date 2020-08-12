@@ -1,11 +1,17 @@
-{% extends 'index2.html'%}
+{% extends 'index.html'%}
 {% load bootstrap4 %}
 {% load static %}
 
 {% block single_category %}
+<div class="container-fluid p-0 float-left">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
 
-<div class="container">
-	
 	<section class="shop-home-list section">
 		<div class="container-fluid">
 			<div class="row">
@@ -16,7 +22,7 @@
 					<div class="row">
 						<div class="col-lg-4 col-md-6 col-12">
 							<div class="list-image overlay">
-								<img src="{{book.photo.url}}" alt="#">
+								<img src="{{book.photo.url}}" alt="book photo">
 								<a href="{{book.get_add_to_cart_url  }}" class="buy"><i class="fa fa-shopping-bag"></i></a>
 							</div>
 						</div>
@@ -24,7 +30,7 @@
 							<div class="content">
 								<h4 class="title"><a href="{{book.get_absolute_url}}">{{book.title}}</a></h4>
 								<h4 class="price with-discount"><a href="{{book.author.get_absolute_url}}">{{book.author}}</a></h4>
-								<p  {% if book.discount_price %}
+								<p>  {% if book.discount_price %}
 									  <span class="mb-1">
 										<del>${{ book.price }}</del>
 									  </span>
@@ -65,8 +71,6 @@
 			</span>
 		</div>
 	</section>
-
-</div>
 
 
 

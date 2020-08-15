@@ -24,7 +24,7 @@ def index(request):
     paginator = Paginator(books,10)
     page_number = request.GET.get('page')
     index_obj = paginator.get_page(page_number)
-    return render(request, 'index.html',{'index_obj': index_obj})
+    return render(request, 'index.html',{'index_obj': index_obj, "books":books})
 
 
 def allbook(request):

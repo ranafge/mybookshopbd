@@ -635,11 +635,9 @@
 				<div class="owl-carousel popular-slider">
 					{% for item in discount_books%}
 					<!-- Start Single Product -->
-	
 					<div class="single-product">
-					
 						<div class="product-img">
-							<a href="product-details.html">
+							<a href="{{item.get_absolute_url}}">
 								<img class="default-img" src="{{item.photo.url}}" alt="#">
 								<img class="hover-img" src="{{item.photo.url}}" alt="#">
 								<span class="new">Save-{{ item.price|sub:item.discount_price }} tk.</span>
@@ -654,7 +652,7 @@
 							</div>
 						</div>
 						<div class="product-content">
-							<h3><a href="product-details.html">{{item.title}}</a></h3>
+							<h3><a href="{{item.get_absolute_url}}">{{item.title}}</a></h3>
 							<div class="product-price">
 								<span class="old">${{item.price}}</span>
 								<span>${{item.discount_price}}</span>
@@ -662,21 +660,11 @@
 						</div>
 					</div>
 					<!-- End Single Product -->
-					<!-- Start Single Product -->
-					
-					
-				
 					{% endfor %}
-					
 				</div>
-			
-		
 			</div>
-			
 		</div>
-	
 	</div>
-
 </div>
 <!-- End Most Popular Area -->
 

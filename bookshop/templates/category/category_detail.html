@@ -1,9 +1,13 @@
 {% extends 'index.html'%}
 {% load bootstrap4 %}
 {% load static %}
+{% block extra_head%}
+{% endblock extra_head%}
 
 {% block single_category %}
-<div class="container-fluid p-0 float-left">
+
+	
+<div class="container-fluid p-0 float-left d-inline-flex p-2">
   <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -12,7 +16,7 @@
   </div>
 </div>
 
-	<section class="shop-home-list section">
+<section class="shop-home-list section">
 		<div class="container-fluid">
 			<div class="row">
 				{% for book in page_obj%}
@@ -72,6 +76,6 @@
 		</div>
 	</section>
 
-
-
 {% endblock single_category %}
+
+

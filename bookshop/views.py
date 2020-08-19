@@ -20,31 +20,39 @@ from django.db.models import Q
 
 
 def index(request):
-    books = models.Bookstore.objects.all().order_by('price')
-    paginator = Paginator(books,10)
-    page_number = request.GET.get('page')
+    books = models.Bookstore.objects.all().order_by("price")
+    paginator = Paginator(books, 10)
+    page_number = request.GET.get("page")
     index_obj = paginator.get_page(page_number)
-    return render(request, 'index.html',{'index_obj': index_obj, "books":books})
+    return render(request, "index.html", {"index_obj": index_obj, "books": books})
 
 
 def allbook(request):
-    books = models.Bookstore.objects.all().order_by('-published_date')
-    authors = models.Author.objects.filter(slug=books).annotate(num_books=Count('id'))
+    books = models.Bookstore.objects.all().order_by("-published_date")
+    authors = models.Author.objects.filter(slug=books).annotate(num_books=Count("id"))
     all_author = models.Author.objects.all()
     all_publication = models.Publication.objects.all()
     all_category = models.Category.objects.all()
-    return render(request, 'allbook.html',
-                  {'books': books, 'authors': authors, 'all_author': all_author, "all_publication": all_publication,
-                   "all_category": all_category})
+    return render(
+        request,
+        "allbook.html",
+        {
+            "books": books,
+            "authors": authors,
+            "all_author": all_author,
+            "all_publication": all_publication,
+            "all_category": all_category,
+        },
+    )
 
 
 def create_ref_code():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+    return "".join(random.choices(string.ascii_letters + string.digits, k=10))
 
 
 class AuthorDetail(generic.detail.SingleObjectMixin, generic.ListView):
-    paginate_by = 2
-    template_name = 'author/author_detail.html'
+    paginate_by = 10
+    template_name = "author/author_detail.html"
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=models.Author.objects.all())
@@ -52,7 +60,7 @@ class AuthorDetail(generic.detail.SingleObjectMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AuthorDetail, self).get_context_data(**kwargs)
-        context['author'] = self.object
+        context["author"] = self.object
         return context
 
     def get_queryset(self):
@@ -60,8 +68,8 @@ class AuthorDetail(generic.detail.SingleObjectMixin, generic.ListView):
 
 
 class PublisherDetail(generic.detail.SingleObjectMixin, generic.ListView):
-    paginate_by = 1
-    template_name = 'publication/publication_detail.html'
+    paginate_by = 10
+    template_name = "publication/publication_detail.html"
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=models.Publication.objects.all())
@@ -69,7 +77,7 @@ class PublisherDetail(generic.detail.SingleObjectMixin, generic.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(PublisherDetail, self).get_context_data(**kwargs)
-        context['publisher'] = self.object
+        context["publisher"] = self.object
         return context
 
     def get_queryset(self):
@@ -78,7 +86,7 @@ class PublisherDetail(generic.detail.SingleObjectMixin, generic.ListView):
 
 class BookListView(generic.ListView):
     model = models.Bookstore
-    template_name = 'bookstore/book_list.html'
+    template_name = "bookstore/book_list.html"
 
     # queryset = models.Bookstore.objects.all()
     # context_object_name = 'book_list'
@@ -88,7 +96,7 @@ class BookListView(generic.ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in the publisher
-        context['myorderitem'] = models.OrderItem.objects.all()
+        context["myorderitem"] = models.OrderItem.objects.all()
         # context['mypublisher'] = self.publication not work
         # context['myauthor'] = self.Author not work
         # context['myauthor'] = self.Category not work
@@ -106,21 +114,21 @@ class BookDetailView(generic.View):
 
     def get(self, request, *args, **kwargs):
         # book = get_object_or_404(models.Bookstore, pk=kwargs.get('pk')) # not work
-        book = get_object_or_404(models.Bookstore, pk=kwargs['pk'])
+        book = get_object_or_404(models.Bookstore, pk=kwargs["pk"])
         context = {"book": book}
         return context
 
 
 class BookDetailSlugView(generic.DetailView):
     model = models.Bookstore
-    slug_field = 'slug'
-    slug_url_kwarg = 'slug'
-    template_name = 'bookstore/book_details.html'
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    template_name = "bookstore/book_details.html"
 
 
 class CategoryDetail(generic.DetailView, MultipleObjectMixin):
     model = models.Category
-    paginate_by = 2
+    paginate_by = 10
     template_name = "category/category_detail.html"
 
     def get_context_data(self, **kwargs):
@@ -129,24 +137,26 @@ class CategoryDetail(generic.DetailView, MultipleObjectMixin):
         print()
         object_list = models.Bookstore.objects.filter(category=self.object)
 
-        context = super(CategoryDetail, self).get_context_data(object_list=object_list, **kwargs)
+        context = super(CategoryDetail, self).get_context_data(
+            object_list=object_list, **kwargs
+        )
 
         return context
 
 
 class MyPhoto(generic.ListView):
     model = models.x
-    template_name = 'photo.html'
+    template_name = "photo.html"
 
 
 class OrderSummary(LoginRequiredMixin, generic.View):
     def get(self, *args, **kwargs):
         try:
             order = models.Order.objects.get(user=self.request.user, ordered=False)
-            return render(self.request, 'other/order_summary.html', {'order': order})
+            return render(self.request, "other/order_summary.html", {"order": order})
         except ObjectDoesNotExist:
-            messages.error(self.request, 'You do not have an order.')
-            return redirect(reverse('bookshop:index'))
+            messages.error(self.request, "You do not have an order.")
+            return redirect(reverse("bookshop:index"))
         # return render(self.request, 'other/order_summary.html', {'order': order})
 
 
@@ -154,9 +164,7 @@ class OrderSummary(LoginRequiredMixin, generic.View):
 def add_to_cart(request, slug):
     book = get_object_or_404(models.Bookstore, slug=slug)
     order_item, created = models.OrderItem.objects.get_or_create(
-        user=request.user,
-        ordered=False,
-        book=book
+        user=request.user, ordered=False, book=book
     )
     order_qs = models.Order.objects.filter(user=request.user, ordered=False)
 
@@ -166,11 +174,11 @@ def add_to_cart(request, slug):
             order_item.quantity += 1
             order_item.save()
             messages.info(request, "The Item Quantity Was Updated")
-            return redirect('bookshop:order-summary')
+            return redirect("bookshop:order-summary")
         else:
             order.books.add(order_item)
             messages.info(request, "This Item Was Added To Your Cart")
-            return redirect('bookshop:order-summary')
+            return redirect("bookshop:order-summary")
     else:
         ordered_date = timezone.now()
         order = models.Order.objects.create(
@@ -178,16 +186,14 @@ def add_to_cart(request, slug):
         )
         order.books.add(order_item)
         messages.info(request, "This Item Was Added To Your Cart")
-        return redirect('bookshop:order-summary')
+        return redirect("bookshop:order-summary")
 
 
 def remove_from_cart(request, slug):
     book = get_object_or_404(models.Bookstore, slug=slug)
     print()
     print(book)
-    order_qs = models.Order.objects.filter(
-        user=request.user, ordered=False
-    )
+    order_qs = models.Order.objects.filter(user=request.user, ordered=False)
 
     if order_qs.exists():
         order = order_qs[0]
@@ -198,13 +204,13 @@ def remove_from_cart(request, slug):
             order.books.remove(order_item)
             order_item.delete()
             messages.info(request, "This Item Was Removed From Your Cart")
-            return redirect('bookshop:order-summary')
+            return redirect("bookshop:order-summary")
         else:
-            messages.info(request, 'This Item Was Removed From Your Cart')
-            return redirect('bookshop:order-summary')
+            messages.info(request, "This Item Was Removed From Your Cart")
+            return redirect("bookshop:order-summary")
     else:
-        messages.info(request, 'You do not have an active order.')
-        return redirect('bookshop:order-summary')
+        messages.info(request, "You do not have an active order.")
+        return redirect("bookshop:order-summary")
 
 
 @login_required
@@ -214,31 +220,41 @@ def remove_single_item_from_cart(request, slug):
     if order_qs.exists():
         order = order_qs[0]
         if order.books.filter(book__slug=book.slug).exists():
-            order_item = models.OrderItem.objects.filter(book=book, user=request.user, ordered=False)[0]
+            order_item = models.OrderItem.objects.filter(
+                book=book, user=request.user, ordered=False
+            )[0]
             if order_item.quantity > 1:
                 order_item.quantity -= 1
                 order_item.save()
             else:
                 order.books.remove(order_item)
             messages.info(request, "This item quantity was updated.")
-            return redirect('bookshop:order-summary')
+            return redirect("bookshop:order-summary")
     else:
-        messages(request, 'You do not have an active order.')
-        return redirect('bookshop:order-summary')
+        messages(request, "You do not have an active order.")
+        return redirect("bookshop:order-summary")
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class CheckoutView(generic.View):
     def get(self, *args, **kwargs):
         try:
             order = models.Order.objects.get(user=self.request.user, ordered=False)
             form = forms.CheckoutForm()
             couponform = forms.CouponForm()
-            return render(self.request, 'other/checkout.html',
-                          {'form': form, 'order': order, 'couponform': couponform, 'DISPLAY_COUPON_FORM': True})
+            return render(
+                self.request,
+                "other/checkout.html",
+                {
+                    "form": form,
+                    "order": order,
+                    "couponform": couponform,
+                    "DISPLAY_COUPON_FORM": True,
+                },
+            )
         except ObjectDoesNotExist:
-            messages.info(self.request, 'You do not have order .')
-            return redirect(reverse('bookshop:order-summary'))
+            messages.info(self.request, "You do not have order .")
+            return redirect(reverse("bookshop:order-summary"))
 
     def post(self, *args, **kwargs):
         form = forms.CheckoutForm(self.request.POST or None)
@@ -263,7 +279,7 @@ class CheckoutView(generic.View):
                     division=division,
                     address=address,
                     payment_option=payment_option,
-                    total_amount=total_amount
+                    total_amount=total_amount,
                 )
                 billing_address.save()
                 order.billing_address = billing_address
@@ -277,26 +293,35 @@ class CheckoutView(generic.View):
                 order.ordered = True
                 order.save()
                 if payment_option == "C":
-                    messages.info(self.request, 'Thanks for your order.')
-                    return redirect('bookshop:thanks')
+                    messages.info(self.request, "Thanks for your order.")
+                    return redirect("bookshop:thanks")
                 elif payment_option == "RCT":
-                    messages.info(self.request, 'This service not available yet. Please choose cash on delivery')
-                    return redirect(reverse('bookshop:checkout'))
+                    messages.info(
+                        self.request,
+                        "This service not available yet. Please choose cash on delivery",
+                    )
+                    return redirect(reverse("bookshop:checkout"))
                 else:
-                    messages.success(self.request, 'This service is not available yet.Please choose cash on delivery')
-                    return redirect(reverse('bookshop:checkout'))
-                messages.success(request, 'Successfully submit your address. Please go to order confirm.')
-                return redirect(reverse('bookshop:thanks'))
+                    messages.success(
+                        self.request,
+                        "This service is not available yet.Please choose cash on delivery",
+                    )
+                    return redirect(reverse("bookshop:checkout"))
+                messages.success(
+                    request,
+                    "Successfully submit your address. Please go to order confirm.",
+                )
+                return redirect(reverse("bookshop:thanks"))
             else:
-                messages.warning(self.request, 'Sorry, Its wrong coupon.')
+                messages.warning(self.request, "Sorry, Its wrong coupon.")
         except ObjectDoesNotExist:
-            messages.error(self.request, 'You do not have an order.')
-            return redirect(reverse('bookshop:index'))
+            messages.error(self.request, "You do not have an order.")
+            return redirect(reverse("bookshop:index"))
 
 
 class Thanks(generic.View):
     def get(self, *args, **kwargs):
-        return render(self.request, 'other/payment.html')
+        return render(self.request, "other/payment.html")
 
 
 def get_coupon(request, code):
@@ -304,8 +329,8 @@ def get_coupon(request, code):
         coupon = models.Coupon.objects.get(code=code)
         return coupon
     except ObjectDoesNotExist:
-        messages.info(request, 'This coupon does not exists.')
-        return redirect(reverse('bookshop:checkout'))
+        messages.info(request, "This coupon does not exists.")
+        return redirect(reverse("bookshop:checkout"))
 
 
 class AddCouponView(generic.View):
@@ -313,21 +338,23 @@ class AddCouponView(generic.View):
         form = forms.CouponForm(self.request.POST or None)
         if form.is_valid():
             try:
-                code = form.cleaned_data.get('code')
+                code = form.cleaned_data.get("code")
                 order = models.Order.objects.get(user=self.request.user, ordered=False)
                 order.coupon = get_coupon(self.request, code)
                 order.save()
-                messages.success(self.request, 'Successfully added coupon.')
-                return redirect(reverse('bookshop:checkout'))
+                messages.success(self.request, "Successfully added coupon.")
+                return redirect(reverse("bookshop:checkout"))
             except ObjectDoesNotExist:
-                messages.info(self.request, 'Not added coupon. You do not have an order.')
-                return redirect(reverse('bookshop:checkout'))
+                messages.info(
+                    self.request, "Not added coupon. You do not have an order."
+                )
+                return redirect(reverse("bookshop:checkout"))
 
 
 class RequestRefund(generic.View):
     def get(self, *args, **kwargs):
         form = forms.RefundForm()
-        return render(self.request, 'request_refund.html', {"form": form})
+        return render(self.request, "request_refund.html", {"form": form})
 
     def post(self, *args, **kwargs):
         form = forms.RefundForm(self.request.POST or None)
@@ -344,16 +371,16 @@ class RequestRefund(generic.View):
                 refund.reason = message
                 refund.email = email
                 refund.save()
-                messages.info(self.request, 'Your Refund request is received.')
-                return redirect(reverse('bookshop:request-refund'))
+                messages.info(self.request, "Your Refund request is received.")
+                return redirect(reverse("bookshop:request-refund"))
 
             except ObjectDoesNotExist:
-                messages.info(self.request, 'Order does not exits.')
-                return redirect(reverse('bookshop:request-refund'))
+                messages.info(self.request, "Order does not exits.")
+                return redirect(reverse("bookshop:request-refund"))
 
 
 def contact_us(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.ContactForm(request.POST)
         if form.is_valid():
             contact = models.Contact()
@@ -363,40 +390,45 @@ def contact_us(request):
             contact.text = form.cleaned_data.get("text")
             contact.name = form.cleaned_data.get("name")
             contact.save()
-            send_mail("Contact from web subject", contact.text + ' ' + contact.phone_number + '' + contact.name,
-                      contact.email, ['ranafge@gmail.com', 'samsul71bd@gmail.com'], fail_silently=True)
-            messages.info(request, 'Thank for your message. We shall contact you soon.')
-            return redirect(reverse('bookshop:index'))
+            send_mail(
+                "Contact from web subject",
+                contact.text + " " + contact.phone_number + "" + contact.name,
+                contact.email,
+                ["ranafge@gmail.com", "samsul71bd@gmail.com"],
+                fail_silently=True,
+            )
+            messages.info(request, "Thank for your message. We shall contact you soon.")
+            return redirect(reverse("bookshop:index"))
         else:
-            messages.warning(request, 'Please check the form again')
-            return redirect(reverse('bookshop:contact-us'))
+            messages.warning(request, "Please check the form again")
+            return redirect(reverse("bookshop:contact-us"))
     else:
         form = forms.ContactForm()
-    return render(request, 'contact_form.html', {'form': form})
+    return render(request, "contact_form.html", {"form": form})
 
 
 def search(request):
     query = request.GET.get("query")
     if query:
         search_book_list = models.Bookstore.objects.filter(
-            Q(slug__icontains=query) |
-            Q(title__icontains=query) |
-            Q(author__name__icontains=query) |
-            Q(author__slug__icontains=query) |
-            Q(category__name__icontains=query) |
-            Q(category__slug__icontains=query) |
-            Q(publication__name__icontains=query) |
-            Q(publication__slug__icontains=query) |
-            Q(subcategory__icontains=query) |
-            Q(price__icontains=query) |
-            Q(discount_price__icontains=query) |
-            Q(isbn__icontains=query) |
-            Q(language__name__icontains=query)
+            Q(slug__icontains=query)
+            | Q(title__icontains=query)
+            | Q(author__name__icontains=query)
+            | Q(author__slug__icontains=query)
+            | Q(category__name__icontains=query)
+            | Q(category__slug__icontains=query)
+            | Q(publication__name__icontains=query)
+            | Q(publication__slug__icontains=query)
+            | Q(subcategory__icontains=query)
+            | Q(price__icontains=query)
+            | Q(discount_price__icontains=query)
+            | Q(isbn__icontains=query)
+            | Q(language__name__icontains=query)
         )
 
         paginator = Paginator(search_book_list, 3)
         total = paginator.count
-        page = request.GET.get('page')
+        page = request.GET.get("page")
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:
@@ -404,44 +436,45 @@ def search(request):
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
 
-        context = {
-            "search_obj": posts,
-            'query': query,
-            'total': total
+        context = {"search_obj": posts, "query": query, "total": total}
 
-        }
-
-        return render(request, 'search.html', context)
+        return render(request, "search.html", context)
     else:
-        return render(request, 'search.html')
+        return render(request, "search.html")
+
 
 class MySearchModel(generic.ListView):
     model = models.Bookstore
-    context_object_name = 'objects'
-    template_name = 'search.html'
+    context_object_name = "objects"
+    template_name = "search.html"
 
     def get_queryset(self):
         qs = self.model.objects.all()
-        search = self.request.GET.get('query')
+        search = self.request.GET.get("query")
         if search:
             qs = qs.filter(title__icontains=search)
-            qs = qs.order_by('price')
+            qs = qs.order_by("price")
         return qs
 
 
 def all_author(request):
     all_author = models.Author.objects.all()
-    return render(request, 'all_author.html', {'all_author': all_author})
+    return render(request, "all_author.html", {"all_author": all_author})
 
 
 def all_publication(request):
     all_publication = models.Publication.objects.all()
-    return render(request, 'all_publication.html', {'all_publication': all_publication})
+    return render(request, "all_publication.html", {"all_publication": all_publication})
 
 
 def all_category(request):
     all_category = models.Category.objects.all()
-    return render(request, 'all_category.html', {'all_category': all_category})
+    return render(request, "all_category.html", {"all_category": all_category})
+
+
+def discount_price_books(request):
+    discount_books = models.Bookstore.objects.filter(discount_price__gt=1).all()
+    return render(request, "index.html", {"discount_books": discount_books},)
 
 
 def handler404(request, exception):
@@ -450,5 +483,3 @@ def handler404(request, exception):
 
 def handler500(request, exception):
     return render(request, "500.html")
-
-

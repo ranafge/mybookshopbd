@@ -43,16 +43,14 @@
 								  {% endif %}
 							</p>
 							<p class="price with-discount"><a href="{{book.publication.get_absolute_url}}">{{book.publication}}</a></p>
-						
-					
 						</div>
 					</div>
 				</div>
 			</div>
 						</div>
 			{%empty%}
-			<div class="alert alert-primary">
-				<strong>Sorry!</strong> This author has no books.
+			<div class="alert alert-info text-left">
+				<strong>Sorry!</strong> This author has no books. If you have request for a book, Please contact us.
 			</div>
 			{% endfor %}
 		</div>
@@ -62,11 +60,9 @@
             {% if page_obj.has_previous %}
                 <a href="?page={{ page_obj.previous_page_number }}">previous</a>
             {% endif %}
-
             <span class="current">
                 Page {{ page_obj.number }} of {{ paginator.num_pages }}.
             </span>
-
             {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}">next</a>
             {% endif %}

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_extensions',
+    "mathfilters",
     'crispy_forms',
     'django.contrib.sites',
     'bookshop.apps.BookshopConfig',

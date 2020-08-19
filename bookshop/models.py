@@ -3,6 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 from django_resized import ResizedImageField
+
 # Create your models here.
 from django.shortcuts import reverse
 from slugger import AutoSlugField
@@ -11,7 +12,7 @@ from django.conf import settings
 
 class AutoSlugModel(models.Model):
     title = models.CharField(max_length=255)
-    slug = AutoSlugField(populate_from='title')
+    slug = AutoSlugField(populate_from="title")
 
 
 class Publication(models.Model):
@@ -22,7 +23,7 @@ class Publication(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('bookshop:publisher-detail', args=[self.slug])
+        return reverse("bookshop:publisher-detail", args=[self.slug])
 
 
 class Category(models.Model):
@@ -33,12 +34,14 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('bookshop:category-detail', args=[self.slug])
+        return reverse("bookshop:category-detail", args=[self.slug])
 
 
 class Author(models.Model):
     name = models.CharField(max_length=120)
-    photo = ResizedImageField(size=[170, 162], upload_to='images', null=True, blank=True)
+    photo = ResizedImageField(
+        size=[170, 162], upload_to="images", null=True, blank=True
+    )
     date_of_birth = models.DateField(blank=True, null=True)
     division = models.CharField(max_length=150, blank=True, null=True)
     district = models.CharField(max_length=200, blank=True, null=True)
@@ -49,7 +52,7 @@ class Author(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('bookshop:author-detail', args=[self.slug])
+        return reverse("bookshop:author-detail", args=[self.slug])
 
     def get_books_count(self):
         return models.Bookstore.object.filter(author=self).count()
@@ -57,8 +60,11 @@ class Author(models.Model):
 
 class Language(models.Model):
     """Model representing a Language (e.g. English, French, Japanese, etc.)"""
-    name = models.CharField(max_length=200,
-                            help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
+
+    name = models.CharField(
+        max_length=200,
+        help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)",
+    )
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
@@ -66,53 +72,64 @@ class Language(models.Model):
 
 
 class Bookstore(models.Model):
-    title = models.CharField(max_length=150, help_text='বাঙলার জমিদার')
-    category = models.ManyToManyField(Category, max_length=150, help_text='প্রবন্ধ, গবেষণা ও অন্যান্য')
-    subcategory = models.CharField(max_length=150, blank=True, null=True, help_text='প্রবন্ধ')
+    title = models.CharField(max_length=150, help_text="বাঙলার জমিদার")
+    category = models.ManyToManyField(
+        Category, max_length=150, help_text="প্রবন্ধ, গবেষণা ও অন্যান্য"
+    )
+    subcategory = models.CharField(
+        max_length=150, blank=True, null=True, help_text="প্রবন্ধ"
+    )
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
     published_date = models.DateField(auto_now_add=True, blank=True, null=True)
-    slug = models.SlugField(blank=True, help_text='প্রবন্ধ-গবেষণা-অন্যান্য')
-    photo = ResizedImageField(size=[178, 121], upload_to='images', null=True, blank=True)
+    slug = models.SlugField(blank=True, help_text="প্রবন্ধ-গবেষণা-অন্যান্য")
+    photo = ResizedImageField(
+        size=[178, 121], upload_to="images", null=True, blank=True
+    )
     book_details = models.TextField(blank=True, null=True)
     price = models.FloatField()
     discount_price = models.FloatField()
-    isbn = models.CharField('ISBN', max_length=13,
-                            help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn'
-                                      '">ISBN number</a>')
-    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
+    isbn = models.CharField(
+        "ISBN",
+        max_length=13,
+        help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn'
+        '">ISBN number</a>',
+    )
+    language = models.ForeignKey("Language", on_delete=models.SET_NULL, null=True)
 
     def display_category(self):
         """Creates a string for the Genre. This is required to display genre in Admin."""
-        return ', '.join([category.name for category in self.category.all()[:3]])
+        return ", ".join([category.name for category in self.category.all()[:3]])
 
-    display_category.short_description = 'Category'
+    display_category.short_description = "Category"
 
     def __str__(self):
         return self.slug
 
     def get_absolute_url(self):
-        return reverse('bookshop:book-slug', kwargs={'slug': self.slug})
+        return reverse("bookshop:book-slug", kwargs={"slug": self.slug})
 
     def get_add_to_cart_url(self):
-        return reverse('bookshop:add-to-cart',
-                       kwargs={'slug': self.slug})
+        return reverse("bookshop:add-to-cart", kwargs={"slug": self.slug})
 
     def get_remove_from_cart_url(self):
-        return reverse('bookshop:remove-from-cart',
-                       kwargs={'slug': self.slug})
+        return reverse("bookshop:remove-from-cart", kwargs={"slug": self.slug})
 
 
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="Unique ID for this particular book across whole library")
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="Unique ID for this particular book across whole library",
+    )
     book = models.ForeignKey(Bookstore, on_delete=models.CASCADE)
     edition = models.CharField(max_length=120, blank=True, null=True)
 
 
 class x(models.Model):
-    p = ResizedImageField(size=[178, 121], upload_to='images', null=True, blank=True)
+    p = ResizedImageField(size=[178, 121], upload_to="images", null=True, blank=True)
 
 
 class OrderItem(models.Model):
@@ -140,15 +157,18 @@ class OrderItem(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ref_code = models.CharField(max_length=10, blank=True, null=True)
     books = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
-    billing_address = models.ForeignKey('BillingAddress', on_delete=models.SET_NULL, null=True, blank=True)
-    coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, blank=True, null=True)
+    billing_address = models.ForeignKey(
+        "BillingAddress", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    coupon = models.ForeignKey(
+        "Coupon", on_delete=models.SET_NULL, blank=True, null=True
+    )
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
@@ -178,10 +198,10 @@ class BillingAddress(models.Model):
     payment_option = models.CharField(max_length=150, blank=True, null=True)
 
     def __str__(self):
-        return 'Billing address  of ' + self.user.username
+        return "Billing address  of " + self.user.username
 
     class Meta:
-        verbose_name_plural = 'Address'
+        verbose_name_plural = "Address"
 
 
 class Coupon(models.Model):
@@ -210,8 +230,7 @@ class SubjectChoice(models.Model):
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=50, null=True
-                            )
+    name = models.CharField(max_length=50, null=True)
     contact_choice_text = models.ForeignKey(SubjectChoice, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
     email = models.CharField(max_length=100)

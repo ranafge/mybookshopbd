@@ -21,7 +21,8 @@ from django.db.models import Q
 
 def market(request):
     return {
-        'all_publication':models.Publication.objects.all(),
-        'all_author':models.Author.objects.all(),
-        'all_category':models.Category.objects.all(),
+        "all_publication": models.Publication.objects.all(),
+        "all_author": models.Author.objects.all(),
+        "all_category": models.Category.objects.all(),
+        "discount_books":models.Bookstore.objects.filter(discount_price__gt=1).all()
     }

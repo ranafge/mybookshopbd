@@ -1,7 +1,7 @@
 {% extends 'index.html'%}
 {% load bootstrap4 %}
 {% load static %}
-
+{% block title_head%}{{author.name}}{% endblock title_head%}
 {% block single_author %}
 {% for message in messages %}
 <div class="container-fluid p-0 float-left">

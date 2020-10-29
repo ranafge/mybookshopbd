@@ -20,15 +20,14 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('bookshop.urls')),
-    path('accounts/', include('allauth.urls')),
-
+    path("admin/", admin.site.urls),
+    path("", include("bookshop.urls", namespace='bookshop')),
+    path("accounts/", include("allauth.urls")),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
+
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

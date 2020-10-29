@@ -40,16 +40,17 @@ class RefundForm(forms.Form):
 
 
 class ContactForm(forms.ModelForm):
-    contact_choice_text = forms.ModelChoiceField(queryset=models.SubjectChoice.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
+    contact_choice_text = forms.ModelChoiceField(queryset=models.SubjectChoice.objects.all(),
+                                                 widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = models.Contact
-        fields = ['name','contact_choice_text', 'phone_number', 'email', 'text']
+        fields = ['name', 'contact_choice_text', 'phone_number', 'email', 'text']
         widgets = {
-            'text': forms.Textarea(attrs={'rows': 3, 'placeholder':'Your message here.'}),
-            'phone_number': forms.TextInput(attrs={'placeholder':'Your Phone number', 'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'placeholder':'Your email here.', 'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'placeholder':'Your name', 'class': 'form-control'}),
+            'text': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Your message here.'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Your Phone number', 'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Your email here.', 'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'placeholder': 'Your name', 'class': 'form-control'}),
         }
 
 

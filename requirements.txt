@@ -4,6 +4,7 @@ astroid==2.4.2
 attrs==19.3.0
 autopep8==1.5.3
 backcall==0.2.0
+beautifulsoup4==4.9.3
 bleach==3.1.5
 certifi==2020.6.20
 chardet==3.0.4
@@ -21,6 +22,7 @@ django-crispy-forms==1.7.2
 django-debug-toolbar==1.10.1
 django-extensions==2.2.9
 django-js-asset==1.2.2
+django-mathfilters==1.0.0
 django-resized==0.3.11
 django-slugger==1.1.2
 django-taggit==1.2.0
@@ -58,24 +60,15 @@ parso==0.7.0
 pep8==1.7.1
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==6.2.0
-pluggy==0.13.1
+Pillow @ file:///tmp/build/80754af9/pillow_1603822255246/work
 prometheus-client==0.8.0
 prompt-toolkit==3.0.5
-ptpython==3.0.2
 ptyprocess==0.6.0
-py==1.8.1
 pycodestyle==2.6.0
 Pygments==2.6.1
-pygraphviz @ git+git://github.com/pygraphviz/pygraphviz.git@7bca5dfb254d9ac05af8fc17c72820322d5aa2c9
-pylint==2.5.3
-pylint-django==2.0.15
-pylint-plugin-utils==0.6
-PyMySQL==0.9.3
 pyparsing==2.4.7
 pyrsistent==0.16.0
 python-dateutil==2.8.1
-python-decouple==3.1
 python3-openid==3.1.0
 pytz==2018.5
 pyzmq==19.0.1
@@ -87,20 +80,15 @@ Send2Trash==1.5.0
 six==1.14.0
 soupsieve==2.0
 sqlparse==0.2.4
-stripe==2.27.0
 terminado==0.8.3
 testpath==0.4.4
 toml==0.10.1
 tornado==6.0.4
-tox==3.15.2
 traitlets==4.3.3
-typed-ast==1.4.1
 Unidecode==1.1.1
 urllib3==1.24.2
-virtualenv==20.0.10
 wcwidth==0.2.5
 webencodings==0.5.1
-Werkzeug==1.0.1
 widgetsnbextension==3.5.1
 wrapt==1.12.1
 zipp==3.1.0

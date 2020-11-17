@@ -36,6 +36,9 @@ urlpatterns = [
     path("all-category/", views.all_category, name="all-category"),
     path("all-publication/", views.all_publication, name="all-publication"),
     path("all-author/", views.all_author, name="all-author"),
+    path('admin/order/<int:order_id>/pdf',
+         views.admin_order_pdf,
+         name='admin_order_pdf'),
 ]
 
 

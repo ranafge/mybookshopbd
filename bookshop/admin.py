@@ -1,7 +1,9 @@
+from django.utils.safestring import mark_safe
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 from . import models
+from django.urls import reverse
 
 myModel = [
     models.Publication,
@@ -14,6 +16,14 @@ myModel = [
     models.Refund,
     models.SubjectChoice,
 ]
+
+
+def order_pdf(obj):
+    url = reverse('bookshop:admin_order_pdf', args=[obj.id])
+    return mark_safe(f'<a href="{url}">PDF</a>')
+
+
+order_pdf.short_description = 'Invoice'
 
 
 def make_refund_accepted(queryset):
@@ -34,6 +44,9 @@ class OrderAdmin(admin.ModelAdmin):
         "refund_granted",
         "coupon",
         "billing_address",
+        'id',
+        order_pdf,
+
     ]
     list_display_links = ["user", "coupon", "billing_address"]
     list_filter = [

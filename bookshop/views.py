@@ -1,9 +1,12 @@
+from django.conf import settings
+import weasyprint
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.decorators import method_decorator
 from django.views.generic.list import MultipleObjectMixin
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.views import generic
@@ -483,3 +486,16 @@ def handler404(request, exception):
 
 def handler500(request, exception):
     return render(request, "500.html")
+
+
+def admin_order_pdf(request, order_id):
+    order = get_object_or_404(models.Order, id=order_id)
+    html = render_to_string('orders/order/pdf.html', {'order': order})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+    weasyprint.HTML(string=html).write_pdf(response, stylesheets=[
+        weasyprint.CSS(
+            settings.STATIC_ROOT + 'css/pdf.css'
+        )
+    ])
+    return response

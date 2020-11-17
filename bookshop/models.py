@@ -1,13 +1,16 @@
 import uuid
+import weasyprint
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 from django_resized import ResizedImageField
-
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 # Create your models here.
 from django.shortcuts import reverse
 from slugger import AutoSlugField
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 
 class AutoSlugModel(models.Model):
@@ -246,3 +249,16 @@ class SearchChoices(models.Model):
 
     def __str__(self):
         return self.search_text
+
+
+
+
+
+
+
+
+
+
+
+
+

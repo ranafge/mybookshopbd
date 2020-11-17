@@ -6,6 +6,15 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+
+<div class="social">
+<ul>
+<li class="facebook">
+<a href="{% url "social:begin" "facebook" %}">Sign in with
+Facebook</a>
+</li>
+</ul>
+</div>
 <div class="container">
   <div class="col-sm-6-sm-offset-3">
 

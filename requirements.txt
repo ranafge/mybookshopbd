@@ -24,7 +24,7 @@ decorator==4.4.2
 defusedxml==0.6.0
 diff-match-patch @ file:///tmp/build/80754af9/diff-match-patch_1594828741838/work
 distlib==0.3.0
-Django==2.1
+Django==2.2.27
 django-allauth==0.39.1
 django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==1.1.1

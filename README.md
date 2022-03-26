@@ -1,4 +1,4 @@
-# mybookshopbd
+# My Book shop website
 I have created this multivendor bookshop using django framework.
 
 

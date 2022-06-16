@@ -75,7 +75,7 @@ nbclient @ file:///tmp/build/80754af9/nbclient_1602783176460/work
 nbconvert @ file:///tmp/build/80754af9/nbconvert_1601914830498/work
 nbformat @ file:///tmp/build/80754af9/nbformat_1602783287752/work
 nest-asyncio @ file:///tmp/build/80754af9/nest-asyncio_1601499549014/work
-notebook==6.0.3
+notebook==6.4.12
 numpydoc @ file:///tmp/build/80754af9/numpydoc_1594166760263/work
 oauthlib==3.0.1
 olefile==0.46
